@@ -137,7 +137,7 @@ app.get("/icons", (c) => {
   }
 });
 
-function generateButton(variant = "default", size = "default", txt = "", href = null, icon) {
+function generateButton(variant = "default", size = "default", txt = "Button", href = "#", icon) {
   // Base styles
   const baseStyles = `
     cursor: pointer;
@@ -147,11 +147,12 @@ function generateButton(variant = "default", size = "default", txt = "", href = 
     gap: 0.5rem;
     white-space: nowrap;
     border-radius: 0.375rem;
-    font-family: verdana;
     font-size: 0.875rem;
-    font-weight: 600;
+    font-weight: 700;
     border: none;
     outline: none;
+    font-family: verdana;
+    text-decoration: none;
     text-transform: uppercase;
   `;
 
@@ -215,22 +216,12 @@ function generateButton(variant = "default", size = "default", txt = "", href = 
 
   const buttonStyles = baseStyles + variants[variant] + sizes[size];
 
-  if (href) {
-    return `
-      <a style="text-decoration: none;" target="_blank" href="https://${href}">
-        <button style="${buttonStyles.replace(/\s+/g, ' ').trim()}">
-        <img width="24px" src="https://iconkit.ronitghosh.site/icons?i=${icon}&t=light" alt="linkedin"/>
-          ${txt}
-        </button>
-      </a>
-    `;
-  } else {
-    return `
-      <button style="${buttonStyles.replace(/\s+/g, ' ').trim()}">
-        ${txt}
-      </button>
-    `;
-  }
+  return `
+    <a target="_blank" href="https://${href}" style="${buttonStyles}">
+     <img width="24px" src="https://iconkit.ronitghosh.site/icons?i=${icon}&t=light" alt="linkedin"/>
+      ${txt}
+    </a>
+  `;
 }
 
 app.get("/buttons", (c) => {
