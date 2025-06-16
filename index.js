@@ -120,10 +120,9 @@ app.get("/icons", (c) => {
     else iconShortNames = i.split(',');
 
     const iconNames = parseShortNames(iconShortNames, theme || undefined);
-    if (!iconNames)
-      return new Response("You didn't format the icons param correctly!", {
-        status: 400,
-      });
+    if (!iconNames) {
+      return c.json({ msg: "You didn't format the icons param correctly!" }, 400);
+    }
 
     const svg = generateSvg(iconNames, perline);
 
@@ -137,6 +136,129 @@ app.get("/icons", (c) => {
     c.json({ msg: "Something went wrong!" }, 500)
   }
 });
+
+function generateButton(variant = "default", size = "default", txt = "", href = null, icon) {
+  // Base styles
+  const baseStyles = `
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+    border-radius: 0.375rem;
+    font-family: verdana;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border: none;
+    outline: none;
+    text-transform: uppercase;
+  `;
+
+  // Variant styles
+  const variants = {
+    default: `
+      background-color: hsl(0, 0%, 9%);
+      color: hsl(0, 0%, 98%);
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    `,
+    destructive: `
+      background-color: hsl(0, 84%, 60%);
+      color: hsl(0, 0%, 100%);
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    `,
+    outline: `
+      border: 1px solid hsl(0, 0%, 89%);
+      background-color: hsl(0, 0%, 100%);
+      color: hsl(0, 0%, 9%);
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    `,
+    secondary: `
+      background-color: hsl(0, 0%, 96%);
+      color: hsl(0, 0%, 9%);
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    `,
+    ghost: `
+      background-color: transparent;
+      color: hsl(0, 0%, 9%);
+    `,
+    link: `
+      background-color: transparent;
+      color: hsl(0, 0%, 9%);
+      text-decoration: underline;
+      text-decoration-skip-ink: auto;
+      text-underline-offset: 4px;
+    `,
+  };
+
+  // Size styles
+  const sizes = {
+    default: `
+      height: 2.25rem;
+      padding: 0.5rem 1rem;
+    `,
+    sm: `
+      height: 2rem;
+      border-radius: 0.375rem;
+      padding: 0rem 0.75rem;
+    `,
+    lg: `
+      height: 2.5rem;
+      border-radius: 0.375rem;
+      padding: 0rem 1.5rem;
+    `,
+    icon: `
+      width: 2.25rem;
+      height: 2.25rem;
+    `,
+  };
+
+  const buttonStyles = baseStyles + variants[variant] + sizes[size];
+
+  if (href) {
+    return `
+      <a style="text-decoration: none;" target="_blank" href="https://${href}">
+        <button style="${buttonStyles.replace(/\s+/g, ' ').trim()}">
+        <img width="24px" src="https://iconkit.ronitghosh.site/icons?i=${icon}&t=light" alt="linkedin"/>
+          ${txt}
+        </button>
+      </a>
+    `;
+  } else {
+    return `
+      <button style="${buttonStyles.replace(/\s+/g, ' ').trim()}">
+        ${txt}
+      </button>
+    `;
+  }
+}
+
+app.get("/buttons", (c) => {
+  const { variant, size, text, href, icon } = c.req.query()
+
+  if (variant !== 'default' &&
+    variant !== 'destructive' &&
+    variant !== 'outline' &&
+    variant !== 'secondary' &&
+    variant !== 'ghost' &&
+    variant !== 'link') {
+    return c.json({ msg: `${variant} is not valid variant!` }, 400)
+  }
+  if (size !== 'default' &&
+    size !== 'sm' &&
+    size !== 'lg' &&
+    size !== 'icon') {
+    return c.json({ msg: `${size} is not valid size!` }, 400)
+  }
+
+  const firstIcon = icon.split(",")[0]
+
+  return c.html(
+    generateButton(variant, size, text, href, firstIcon),
+    200,
+    { "Content-Type": "text/html" }
+  )
+})
 
 app.get("/", (c) => { return c.redirect("./icons?i=all&t=dark") })
 
