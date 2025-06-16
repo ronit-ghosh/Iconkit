@@ -50,7 +50,7 @@ const shortNames = {
 
 const themedIcons = [
   ...Object.keys(icons)
-    .filter(i => i.includes('-light') || i.includes('-dark'))
+    .filter(i => i.includes('-light') || i.includes('-dark') || i.includes('-charcoal'))
     .map(i => i.split('-')[0]),
 ];
 
@@ -105,8 +105,8 @@ app.get("/icons", (c) => {
 
     const theme = t || "dark";
 
-    if (theme !== 'light' && theme !== 'dark') {
-      return c.json({ msg: "Theme must be either 'light' or 'dark'" }, 400);
+    if (theme !== 'light' && theme !== 'dark' && theme !== 'charcoal') {
+      return c.json({ msg: "Theme must be either 'light', 'dark' or 'charcoal';" }, 400);
     }
 
     const perline = pl || ICONS_PER_LINE

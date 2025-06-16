@@ -6,6 +6,12 @@
   "compatibility_flags": [
     "nodejs_compat"
   ],
+  "routes": [
+    {
+      "pattern": "iconkit.ronitghosh.site",
+      "custom_domain": true
+    }
+  ]
   // "vars": {
   //   "MY_VAR": "my-variable"
   // },
