@@ -1,0 +1,19 @@
+{
+  "name": "iconkit",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "build:icons": "bun run ./icons.js",
+    "dev": "bun build:icons && wrangler dev",
+    "deploy": "bun build:icons && wrangler deploy",
+    "cf-typegen": "wrangler types --env-interface CloudflareBindings"
+  },
+  "dependencies": {
+    "hono": "^4.7.11"
+  },
+  "devDependencies": {
+    "wrangler": "^4.4.0"
+  }
+}
