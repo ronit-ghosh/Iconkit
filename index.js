@@ -46,6 +46,9 @@ const shortNames = {
   rxjava: 'reactivex',
   ghactions: 'githubactions',
   sklearn: 'scikitlearn',
+  f360: 'fusion360',
+  jupyter: 'jupyternotebook',
+  gcolab: 'googlecolab'
 };
 
 const themedIcons = [
