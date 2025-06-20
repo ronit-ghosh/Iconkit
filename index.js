@@ -48,7 +48,8 @@ const shortNames = {
   sklearn: 'scikitlearn',
   f360: 'fusion360',
   jupyter: 'jupyternotebook',
-  gcolab: 'googlecolab'
+  gcolab: 'googlecolab',
+  motion: 'framermotion'
 };
 
 const themedIcons = [
